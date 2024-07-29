@@ -1,0 +1,32 @@
+---
+interface Props {
+    href?:      string;
+    [propName: string]: any;
+}
+
+const {
+    href,
+    ...attributes
+} = Astro.props;
+
+const Element = href ? 'a' : 'button';
+---
+
+<Element
+    href={ href }
+    {...attributes}
+>
+    <slot />
+</Element>
+
+<style lang="scss">
+    a,
+    button {
+        border: none;
+        padding: 0;
+        text-align: left;
+        background-color: transparent;
+        color: inherit;
+        cursor: pointer;
+    }
+</style>

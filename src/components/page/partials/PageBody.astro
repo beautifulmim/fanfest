@@ -1,0 +1,29 @@
+---
+import Wrapper from '@components/compositions/Wrapper.astro';
+
+interface Props {
+    max_width?: string;
+    neocom?:    boolean;
+}
+
+const {
+    max_width = '80rem',
+    neocom = true,
+} = Astro.props
+---
+
+<div class="[ post-content ]">
+    <Wrapper padding_block="var(--space-xl)" neocom={neocom} max_width={max_width} centered={true}>
+        <slot />
+    </Wapper>
+</div>
+
+<style is:global lang="scss">
+    .post-content {
+        min-height: 100vh;
+
+        * {
+            scroll-margin-top: var(--space-3xl);
+        }
+    }
+</style>

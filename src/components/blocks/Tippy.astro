@@ -1,0 +1,57 @@
+---
+import { getLangFromUrl, useTranslatedPath } from '@i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const translatePath = useTranslatedPath(lang);
+
+interface Props {
+    element?:           string;
+    partial?:           string;
+    height?:            string;
+    width?:             string;
+    show_delay?:        number;
+    hide_delay?:        number;
+    [propName: string]: any;
+}
+
+const {
+    element = 'span',
+    partial,
+    height = 'auto',
+    width = 'auto',
+    show_delay = '1000',
+    hide_delay = '200',
+    ...attributes
+} = Astro.props
+
+const Element = element
+---
+
+{!partial ?
+    <Element {...attributes}>
+        <slot />
+    </Element>
+    :
+    <Element
+        data-tippy-content={`
+            <div hx-on::after-request="
+                const popper = this.closest('[data-tippy-root]')
+                const instance = popper._tippy
+                instance.popperInstance.update()
+                popper.classList.remove('visually-hidden')
+            ">
+                <span
+                    hx-on::before-request="this.closest('[data-tippy-root]').classList.add('visually-hidden')"
+                    hx-trigger="intersect"
+                    hx-get='${translatePath(partial)}'
+                    hx-swap="outerHTML transition:false"
+                />
+            </div>
+        `}
+        data-tippy-delay={`[${show_delay}, ${hide_delay}]`}
+        data-tippy-allowhtml='true'
+        {...attributes}
+    >
+        <slot />
+    </Element>
+}

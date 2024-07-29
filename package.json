@@ -10,8 +10,23 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^4.11.0",
     "@astrojs/check": "^0.7.0",
+    "@astrojs/node": "^8.3.2",
+    "@astrojs/tailwind": "^5.1.0",
+    "@fontsource-variable/montserrat": "^5.0.19",
+    "@fontsource/qahiri": "^5.0.13",
+    "@midudev/tailwind-animations": "^0.0.7",
+    "@types/marked": "^6.0.0",
+    "astro": "^4.11.0",
+    "flatpickr": "^4.6.13",
+    "jose": "^5.6.3",
+    "marked": "^13.0.2",
+    "moment": "^2.30.1",
+    "tailwindcss": "^3.4.7",
+    "tippy.js": "^6.3.7",
     "typescript": "^5.5.2"
+  },
+  "devDependencies": {
+    "sass": "^1.77.8"
   }
 }

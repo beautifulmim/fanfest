@@ -1,0 +1,25 @@
+---
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+interface Props {
+    width?:     string;
+    height?:    string;
+    square?:  boolean;
+}
+
+const {
+    width = '48',
+    square = false,
+} = Astro.props;
+---
+<img loading="lazy" src={square ? '/images/fleet-logo-square.svg' : '/images/fleet-logo.svg'} width={width} height={width} alt={t('icon.fleet.alt')} />
+
+<style>
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+</style>

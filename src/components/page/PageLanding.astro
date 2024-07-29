@@ -1,0 +1,32 @@
+---
+import PageCover from '@components/page/partials/PageCover.astro';
+import Wrapper from '@components/compositions/Wrapper.astro';
+
+import type { PageCoverOptions } from '@dtypes/layout_components'
+
+interface Props {
+    cover?:                 false | PageCoverOptions;
+    wide?:                  boolean;
+    fullscreen?:            boolean;
+    neocom?:                boolean;
+    [propName: string]:     any;
+}
+
+const {
+    cover,
+    wide = false,
+    fullscreen = false,
+    neocom = true,
+    ...attributes
+} = Astro.props;
+
+const max_width = (wide ? 'var(--max-content-width)' : 'var(--max-text-width)')
+---
+<main id="content" {...attributes}>
+    {cover && <PageCover {...cover} /> }
+    <slot name="cover" />
+
+    <Wrapper class="[ w-full ]" max_width={max_width} centered={true} padding_block={fullscreen ? '0' : 'var(--space-2xl)'} neocom={neocom}>
+        <slot />
+    </Wrapper>
+</main>

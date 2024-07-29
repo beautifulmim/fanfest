@@ -1,0 +1,103 @@
+---
+import Dialog from '@components/blocks/Dialog.astro';
+import TrashIcon from '@components/icons/buttons/TrashIcon.astro';
+
+interface Props {
+    [propName: string]: any;
+}
+---
+
+<div class="[ modal ]">
+    <Dialog
+        x-data={`{
+            close_dialog() {
+                if (!modal_open)
+                    return
+                
+                var clickEvent = new MouseEvent("click", {
+                    "view": window,
+                    "bubbles": true,
+                    "cancelable": false
+                });
+
+                document.querySelector('.modal-backdrop').dispatchEvent(clickEvent);
+            }
+        }`}
+        @keyup.escape.window="close_dialog()"
+        x-bind:class="(modal_open ? 'open' : '')"
+        x-bind:aria-hidden="modal_open == false"
+        breakout={true}
+        aria-describedby="modal-description"
+        class="[ w-full max-w-[770px] ]"
+        thin={true}
+        x-trap="modal_open"
+        x-bind:inert="!modal_open"
+    >
+        <div
+            id="modal-description"
+            class="[ modal-content ]"
+            x-html="modal_content"
+            x-bind:hx-get="modal_partial && !modal_partial_params ? modal_partial : false"
+            x-bind:hx-post="modal_partial && modal_partial_params ? modal_partial : false"
+            x-bind:hx-vals="JSON.stringify({ data: JSON.stringify(modal_partial_params) })"
+            x-bind:hx-trigger="modal_partial ? 'intersect' : false"
+            x-bind:hx-swap="modal_partial ? 'innerHTML transition:true' : false"
+            hx-target="#modal-description"
+            hx-indicator=".loader"
+        />
+        <button modal-action="cancel"><TrashIcon /></button>
+    </Dialog>
+
+    <div
+        class="modal-backdrop"
+        x-bind:class="{ open: modal_open }"
+        modal-action="cancel"
+    />
+</div>
+
+<style lang="scss">
+    :global([modal-action] *) {
+        pointer-events: none !important;
+    }
+
+    :global(.modal .modal-content p) {
+        font-size: var(--step--1);
+    }
+
+    .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: var(--backdrop-z-index);
+        display: none;
+
+        &.open {
+            display: block;
+        }
+    }
+    
+    button {
+        border: none;
+        position: absolute;
+        right: 10px;
+        top: 3px;
+        display: flex;
+        background-color: transparent;
+        color: var(--highlight);
+        z-index: var(--dialog-close-z-index);
+        cursor: pointer;
+        padding: 6px 4px 20px 27px;
+
+        &:focus-visible {
+            outline: none;
+        }
+    }
+
+    :global([modal-action="cancel"] svg) {
+        transition: var(--fast-transition);
+        width: 12px;
+    }
+
+    :global([modal-action="cancel"]:focus-visible svg) {
+        transform: scale(1.5);
+    }
+</style>

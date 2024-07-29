@@ -1,0 +1,9 @@
+:root {
+    --max-content-width: 1920px;
+    --max-text-width: 60rem;
+    --max-landing-width: 49rem;
+    --max-col-width: 70rem;
+
+    --component-padding-block: var(--space-l);
+    --component-block-gap: var(--component-padding-block);
+}

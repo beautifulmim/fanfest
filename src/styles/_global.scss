@@ -1,0 +1,107 @@
+:root {
+    color-scheme: dark;
+}
+
+html,
+body,
+.viewport-layout-inner {
+    width: 100%;
+    accent-color: var(--fleet-red);
+}
+
+.viewport-layout {
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+    // overflow: hidden;
+
+    p {
+        font-size: var(--step-0);
+    }
+
+	> main {
+		position: relative;
+	}
+}
+
+.viewport-cover {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: -1;
+
+    img {
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: block;
+        object-fit: cover;
+    }
+}
+
+.component {
+    h4, p {
+        font-size: var(--step--1);
+    }
+}
+
+a[href] {
+    color: var(--highlight);
+    text-decoration: none;
+}
+
+@media (hover: hover) {
+    ::-webkit-scrollbar {
+        width: var(--space-3xs);
+        height: var(--space-3xs);
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--scrollbar-thumb);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--scrollbar-thumb-hover);
+    }
+}
+
+.sentence-cap::first-letter {
+    text-transform: capitalize;
+}
+
+.visually-hidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: auto;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    white-space: nowrap;
+}
+
+pre {
+    background-color: var(--component-background);
+    padding: var(--space-3xs);
+    border: solod 1px var(--border-color);
+}
+
+code {
+    background-color: var(--component-background);
+    color: var(--highlight);
+    padding-inline: var(--space-3xs);
+}
+
+a:focus-visible {
+    outline-color: var(--highlight);
+    outline-style: double;
+}
+
+.highlight {
+    color: var(--highlight);
+}

@@ -1,0 +1,103 @@
+---
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+import Dialog from '@components/blocks/Dialog.astro';
+import Flexblock from '@components/compositions/Flexblock.astro';
+import FlexInline from '@components/compositions/FlexInline.astro';
+import Button from '@components/blocks/Button.astro';
+
+interface Props {
+    [propName: string]: any;
+}
+---
+
+<div class="[ alert-dialog ]">
+    <Dialog
+        x-data={`{
+            close_dialog() {
+                if (!alert_dialog_open)
+                    return
+                
+                var clickEvent = new MouseEvent("click", {
+                    "view": window,
+                    "bubbles": true,
+                    "cancelable": false
+                });
+
+                document.querySelector('.alert-dialog-backdrop').dispatchEvent(clickEvent);
+            }
+        }`}
+        @keyup.escape.window="close_dialog()"
+        x-bind:class="(alert_dialog_open ? 'open' : '')"
+        x-bind:aria-hidden="alert_dialog_open == false"
+        breakout={true}
+        class="[ w-full max-w-[500px] max-h-[80vh] overflow-y-auto ]"
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        x-trap="alert_dialog_open"
+        x-bind:inert="!alert_dialog_open"
+    >
+        <Flexblock gap="var(--space-l)">
+            <Flexblock gap="var(--space-s)">
+                <h3 id="alert-dialog-title" x-text="alert_dialog_title"></h3>
+                <div
+                    id="alert-dialog-description"
+                    class="[ alert-dialog-content ]"
+                    x-html="alert_dialog_content"
+                    x-bind:hx-get="alert_dialog_partial ? (alert_dialog_partial ?? false) : false"
+                    x-bind:hx-trigger="alert_dialog_partial ? 'intersect' : false"
+                    x-bind:hx-swap="alert_dialog_partial ? 'innerHTML transition:true' : false"
+                    hx-target="#alert-dialog-description"
+                    hx-indicator=".loader"
+                ></div>
+            </Flexblock>
+
+            <FlexInline justification='flex-end'>
+                <Button
+                    size='sm'
+                    alert-dialog-action="accept"
+                    x-bind:hx-get="alert_dialog_hx?.method == 'get' ? (alert_dialog_hx?.url ?? false) : false"
+                    x-bind:hx-post="alert_dialog_hx?.method == 'post' ? (alert_dialog_hx?.url ?? false) : false"
+                    x-bind:hx-put="alert_dialog_hx?.method == 'put' ? (alert_dialog_hx?.url ?? false) : false"
+                    x-bind:hx-patch="alert_dialog_hx?.method == 'patch' ? (alert_dialog_hx?.url ?? false) : false"
+                    x-bind:hx-delete="alert_dialog_hx?.method == 'delete' ? (alert_dialog_hx?.url ?? false) : false"
+                    x-bind:hx-target="alert_dialog_hx?.target ?? false"
+                    x-bind:hx-swap="alert_dialog_hx?.swap ?? 'none'"
+                    hx-indicator=".loader"
+                >
+                    {t('ok')}
+                </Button>
+            </FlexInline>
+        </Flexblock>
+    </Dialog>
+
+    <div
+        class="alert-dialog-backdrop"
+        x-bind:class="{ open: alert_dialog_open }"
+        alert-dialog-action="close"
+    />
+</div>
+
+<style lang="scss">
+    :global([alert-dialog-action] *) {
+        pointer-events: none !important;
+    }
+
+    :global(.alert-dialog .alert-dialog-content p) {
+        font-size: var(--step--1);
+    }
+
+    .alert-dialog-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: var(--backdrop-z-index);
+        display: none;
+
+        &.open {
+            display: block;
+        }
+    }
+</style>

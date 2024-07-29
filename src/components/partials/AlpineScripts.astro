@@ -1,0 +1,226 @@
+---
+import { is_prod_mode } from '@helpers/env'
+
+export const AlertDialogXData = `
+    alert_dialog_open: false,
+    alert_dialog_title: '',
+    alert_dialog_content: '',
+    alert_dialog_return_on_accept: true,
+    alert_dialog_hx: {},
+    alert_dialog_partial: false,
+    show_alert_dialog(args) {
+        const defaults =  {
+            title: '',
+            content: '',
+            partial: '',
+            return_on_accept: true,
+            hx: {
+                method: 'get',
+                url: false,
+                target: false,
+                swap: false,
+            }
+        }
+
+        const properties = {...defaults, ...args}
+
+        if (this.alert_dialog_partial != properties.partial)
+            this.alert_dialog_content = ''
+
+        if (properties.partial) {
+            this.alert_dialog_content = '<div class="[ rifter-dialog ]">'+this.rifter_animation+'</div>'
+        } else
+            this.alert_dialog_content = properties.content
+
+        this.alert_dialog_title = properties.title
+        this.alert_dialog_return_on_accept = properties.return_on_accept
+        this.alert_dialog_partial = properties.partial
+        this.alert_dialog_hx = properties.hx
+
+        this.alert_dialog_open = true
+
+        setTimeout(function () {
+            htmx.process(document.querySelector('.alert-dialog'))
+        })
+        
+        return new Promise((resolve) => {
+            this.alert_dialog_close().then((result) => {
+                this.alert_dialog_open = false
+                resolve(result.action == 'accept' ? this.alert_dialog_return_on_accept : false) 
+            })
+        })
+    },
+    alert_dialog_close() {
+        const body = document.querySelector("body");
+
+        return new Promise(function (resolve, reject) {
+            var listener = event => {
+                if (event.target.hasAttribute('alert-dialog-action')) {
+                    body.removeEventListener('click', listener);
+                    resolve({
+                        action: event.target.getAttribute('alert-dialog-action')
+                    });
+                }
+            };
+            body.addEventListener('click', listener);
+        });
+    },`
+
+export const ConfirmDialogXData = `
+    confirm_dialog_open: false,
+    confirm_dialog_title: '',
+    confirm_dialog_content: '',
+    confirm_dialog_accept_disabled: false,
+    confirm_dialog_return_on_accept: true,
+    confirm_dialog_hx: {},
+    confirm_dialog_partial: false,
+    async show_confirm_dialog(args) {
+        const defaults =  {
+            title: '',
+            content: '',
+            partial: '',
+            accept_disabled: false,
+            return_on_accept: true,
+            hx: {
+                method: 'get',
+                url: false,
+                target: false,
+                swap: false,
+                vals: false,
+            }
+        }
+
+        const properties = {...defaults, ...args}
+
+        if (this.confirm_dialog_partial != properties.partial)
+            this.confirm_dialog_content = ''
+
+        if (properties.partial) {
+            this.confirm_dialog_content = '<div class="[ rifter-dialog ]">'+this.rifter_animation+'</div>'
+        } else
+            this.confirm_dialog_content = properties.content
+
+        this.confirm_dialog_title = properties.title
+        this.confirm_dialog_return_on_accept = properties.return_on_accept
+        this.confirm_dialog_partial = properties.partial
+        this.confirm_dialog_post_params = properties.post_params
+        this.confirm_dialog_accept_disabled = properties.accept_disabled
+        this.confirm_dialog_hx = properties.hx
+
+        this.confirm_dialog_open = true
+
+        setTimeout(function () {
+            htmx.process(document.querySelector('.confirm-dialog'))
+        })
+
+        return new Promise((resolve) => {
+            this.confirm_dialog_close().then((result) => {
+                this.confirm_dialog_open = false
+                resolve(result.action == 'accept' ? this.confirm_dialog_return_on_accept : false) 
+            })
+        })
+    },
+    confirm_dialog_close() {
+        const body = document.querySelector("body");
+
+        return new Promise(function (resolve, reject) {
+            var listener = event => {
+                if (event.target.hasAttribute('confirm-dialog-action')) {
+                    body.removeEventListener('click', listener);
+                    resolve({
+                        action: event.target.getAttribute('confirm-dialog-action')
+                    });
+                }
+            };
+            body.addEventListener('click', listener);
+        });
+    },
+    confirm_dialog_set_accept_disable(val) {
+        this.confirm_dialog_accept_disabled // dont remove this line
+        this.confirm_dialog_accept_disabled = val
+    },`
+
+export const ModalXData = `
+    modal_open: false,
+    modal_content: '',
+    modal_partial: '',
+    modal_partial_params: '',
+    async show_modal(args) {
+        const defaults =  {
+            content: '',
+            partial: '',
+            return_on_accept: true,
+        }
+
+        const properties = {...defaults, ...args}
+
+        if (this.modal_partial != properties.partial) {
+            this.modal_content = ''
+            ${!is_prod_mode() ? `console.log('Modal cache cleared!')` : ''}
+        }
+
+        if (properties.partial_params && (JSON.stringify(properties.partial_params) != JSON.stringify(this.modal_partial_params))) {
+            this.modal_content = ''
+            ${!is_prod_mode() ? `console.log('Modal cache cleared!')` : ''}
+        }
+
+        if (properties.partial) {
+            this.modal_content = '<div class="[ rifter-modal ]">'+this.rifter_animation+'</div>'
+        } else
+            this.modal_content = properties.content
+
+        this.modal_return_on_accept = properties.return_on_accept
+        this.modal_partial = properties.partial
+
+        if (properties.partial_params)
+            this.modal_partial_params = properties.partial_params
+        else
+            properties.partial_params = null
+
+        this.modal_open = true
+
+        setTimeout(function () {
+            htmx.process(document.querySelector('.modal'))
+        })
+
+        return new Promise((resolve) => {
+            this.modal_close().then((result) => {
+                this.modal_open = false
+                resolve(result.action == 'accept' ? this.modal_return_on_accept : false)
+            })
+        })
+    },
+    modal_close() {
+        const body = document.querySelector("body");
+
+        return new Promise(function (resolve, reject) {
+            var listener = event => {
+                if (event.target.hasAttribute('modal-action')) {
+                    body.removeEventListener('click', listener);
+                    resolve({
+                        action: event.target.getAttribute('modal-action')
+                    });
+                }
+            };
+            body.addEventListener('click', listener);
+        });
+    },`
+
+export const InitXData = `
+    init() {
+        document.addEventListener('wheel', event => {
+            const el = document.querySelector('.flatpickr-hour')
+
+            if (el && el.contains(event.target)) {
+                event.stopPropagation()
+                event.preventDefault()
+
+                if (event.deltaY < 0)
+                    el.stepUp();
+                else
+                    el.stepDown();
+            }
+        }, { passive: false })
+        
+    },`
+---
