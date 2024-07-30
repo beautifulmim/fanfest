@@ -1,0 +1,65 @@
+---
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+import type { CorporationBadgeProps } from '@dtypes/layout_components'
+import { get_corporation_by_id } from '@helpers/api.eveonline/corporations'
+import type { CorporationEvE } from '@dtypes/api.eveonline'
+import { prod_error_messages } from '@helpers/env'
+
+interface Props {
+    corporation:    CorporationBadgeProps;
+    border?:        boolean;
+}
+
+const {
+    corporation,
+    border = false,
+} = Astro.props
+
+let corporation_eve:CorporationEvE
+let get_eve_corporation_error
+if (!corporation?.name) {
+    try {
+        corporation_eve = await get_corporation_by_id(corporation.id)
+    } catch (error) {
+        get_eve_corporation_error = (prod_error_messages() ? t('get_eve_corporation_error') : error.message)
+    }
+}
+
+const corporation_name = corporation?.name ?? (corporation_eve?.name ?? get_eve_corporation_error)
+const size = corporation?.size ?? 'sm'
+const logo_size = (size == 'sm' ? 32 : 64)
+const description:string | false = corporation?.description ?? false
+
+import { get_corporation_logo } from '@helpers/eve_image_server';
+import FixedFluid from '@components/compositions/FixedFluid.astro'
+import Flexblock from '@components/compositions/Flexblock.astro';
+
+const gap = size === 'sm' ? 'var(--space-2xs)' : 'var(--space-s)'
+---
+<FixedFluid
+    width={`${logo_size}px`}
+    gap={gap}
+    class="[ items-center ]"
+>
+    <picture class:list={{ border: border }}>
+        <img loading="lazy" src={get_corporation_logo(corporation.id, logo_size)} width={logo_size} height={logo_size} />
+    </picture>
+    <Flexblock gap='0' class="[ w-full ]">
+        {size == 'lg' ?
+            <span>
+                <span class="[ text-[var(--highlight)] max-w-fit ]">{corporation_name}</span>
+            </span>
+            <slot>
+                <small>{description}</small>
+            </slot>
+            :
+            <small class="[ max-w-fit ]">
+                <a class="[ text-[var(--highlight)] ]">{corporation_name}</a>
+            </small>
+        }
+    </Flexblock>
+</FixedFluid>

@@ -1,11 +1,11 @@
 :root {
-    --foreground:           white;
-    --background:           #121212;
+    --foreground:           black;
+    --background:           #23cd67;
     --component-background: rgb(25, 25, 25);
-    --highlight:            white;
+    --highlight:            #e21d41;
 
     --form-color:               var(--fleet-yellow);
-    --button-color:             var(--fleet-yellow);
+    --button-color:             var(--highlight);
     --border-color:             transparent;
     --border-color-hover:       transparent;
     --scrollbar-thumb:          #444;

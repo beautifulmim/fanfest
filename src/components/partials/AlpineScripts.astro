@@ -223,4 +223,11 @@ export const InitXData = `
         }, { passive: false })
         
     },`
+
+export const RifterAnimationXData = `
+    rifter_animation: false,
+    rifter_animation_init() {
+        console.log($refs.rifter)
+        this.rifter_animation = $refs.rifter.outerHTML
+    },`
 ---

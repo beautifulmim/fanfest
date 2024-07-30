@@ -1,0 +1,31 @@
+---
+import type { TagColors } from '@dtypes/layout_components';
+
+interface Props {
+    color?: TagColors | string;
+}
+
+const {
+    color = 'fleet-red',
+} = Astro.props;
+
+const tag_color = `var(--${color})`;
+---
+
+<div class="[ debug-tag ]">
+    <slot />
+</div>
+
+<style lang="scss" define:vars={{ tag_color }}>
+    .debug-tag {
+        display: flex;
+        align-items: center;
+    }
+
+    :global(.debug-tag > *) {
+        padding: var(--space-3xs) var(--space-2xs);
+        font-size: var(--step--1) !important;
+        color: var(--highlight);
+        background-color: var(--tag_color);
+    }
+</style>

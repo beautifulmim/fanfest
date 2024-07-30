@@ -3,19 +3,98 @@ import { getLangFromUrl, useTranslations } from '@i18n/utils';
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-import Default from '@layouts/Default.astro';
+const IBN_CHARACTER_ID = 1978535095
+
+import PilotName from '@components/blocks/PilotName.astro'
+import { experimental_AstroContainer as AstroContainer } from 'astro/container';
+import { marked } from 'marked';
+
+const container = await AstroContainer.create();
+const ibn_modal = await container.renderToString(PilotName,  {
+	props: {
+		character_id: IBN_CHARACTER_ID,
+		character_name: 'Ibn Khatab',
+	},
+})
+
+const intercepted_script_text = (marked.parseInline(t('intercepted_script_text')) as string).replace('Ibn Khatab', ibn_modal)
 
 import PageLanding from '@components/page/PageLanding.astro';
 
 const page_title = t('index.page_title');
+
+import Default from '@layouts/Default.astro';
+
+import TextBox from '@components/layout/TextBox.astro';
+
+import Flexblock from '@components/compositions/Flexblock.astro';
+import Wrapper from '@components/compositions/Wrapper.astro';
+
+import StylessButton from '@components/blocks/StylessButton.astro';
+import Button from '@components/blocks/Button.astro';
+
+import ArrowRight from '@components/icons/buttons/ArrowRight.astro';
 ---
 
 <Default title={page_title}>
-    <PageLanding
-        fullscreen={true}
-        wide={true}
-    >
-		<div class="[ content-section ][ min-h-[100vh] max-w-[48rem] items-center ]">
-		</div>
-    </PageLanding>
+	<PageLanding fullscreen={true} wide={true} neocom={false}>
+		<Wrapper
+			class="[ content-section ][ min-h-[100vh] max-w-[48rem] ]"
+			centered={true}
+			padding_block='0'
+			padding_inline='0'
+		>
+			<Flexblock centered={true} class="[ text-center relative ]" gap='var(--space-xl)'>
+				<img class="[ marshall ]" src="/images/marshall.png" width="1172" height="567" />
+				
+				<Flexblock centered={true}>
+					<TextBox>
+						<h3 class="[ animate-fade-in animation-delay-3000 ]" set:html={intercepted_script_text} />
+					</TextBox>
+					<StylessButton
+						class="[ animate-bounce-fade-in animation-delay-7000 animate-duration-faster max-w-fit text-[var(--highlight)] ]"
+						href="https://evemaps.dotlan.net/system/Sosala"
+						target="_blank"
+        				rel="nofollow noopener noreferrer"
+					>
+						Sosala 0.4
+					</StylessButton>
+					<Button class="[ animate-fade-in animate-duration-faster animation-delay-9000 ]">
+						{t('hmm_so_what')}
+						<ArrowRight />
+					</Button>
+				</Flexblock>
+			</Flexblock>
+		</Wrapper>
+	</PageLanding>
 </Default>
+
+<style lang="scss">
+	.marshall {
+		max-height: 50vh;
+		width: auto;
+        image-rendering: pixelated;
+        transform: scale(0);
+		animation: warpin cubic-bezier(0.390, 0.575, 0.565, 1.000) both 0.45s;
+		animation-iteration-count: 1;
+		animation-delay: 2s;
+		transform-origin: top center;
+		animation-fill-mode: forwards;
+	}
+
+	@keyframes warpin {
+		from {
+			transform: scale(0);
+		}
+
+		to {
+			transform: scale(1);
+		}
+	}
+
+	a {
+		font-family: var(--heading-font);
+		font-size: var(--step-5);
+		text-transform: uppercase;
+	}
+</style>

@@ -4,7 +4,9 @@ export type ButtonSizes = 'sm' | 'lg'
 export type BadgeColors = 'fleet-red' | 'alliance-blue' | 'militia-purple' | 'green' | 'fleet-yellow'
 export type TagColors = 'fleet-red' | 'alliance-blue' | 'militia-purple' | 'green'
 export type FlexInlineJustify = 'center' | 'flex-start' | 'flex-end' | 'space-around' | 'space-between'
+export type EvEImageServiceSize = 32 | 64 | 128 | 256 | 512 | 1024
 
+export type CharacterRaces = 'caldari' | 'minmatar' | 'amarr' | 'gallente' | 'unknown'
 export type spaces = '0' | '1px' | '2px' | 'var(--component-block-gap)' | 'var(--space-3xs)' | 'var(--space-2xs)' | 'var(--space-xs)' 
 | 'var(--space-s)' | 'var(--space-m)' | 'var(--space-l)' | 'var(--space-xl)' | 'var(--space-2xl)' | 'var(--space-3xl)' 
 | 'var(--space-3xs-2xs)' | 'var(--space-2xs-xs)' | 'var(--space-xs-s)' | 'var(--space-s-m)' | 'var(--space-m-l)' 
@@ -58,4 +60,23 @@ export interface SelectOptions {
     value?: string | number;
     label:  string;
     image?: string;
+}
+
+export interface CorporationHistoryItem {
+    corporation_id:         number;
+    membership_time_text?:  string;
+}
+
+export type BadgeSize = 'sm' | 'lg'
+
+export interface CorporationBadgeProps {
+    id:             number;
+    name?:          string;
+    size?:          BadgeSize;
+    description?:   string;
+}
+
+export interface AllianceBadgeProps {
+    id:     number;
+    name?:  string;
 }

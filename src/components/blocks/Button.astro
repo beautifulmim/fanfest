@@ -12,7 +12,7 @@ interface Props {
 }
 
 const {
-    color = 'fleet-red',
+    color = 'highlight',
     external = false,
     href,
     size = 'lg',
@@ -23,7 +23,7 @@ const {
 delete attributes.class
 
 const button_background_color = `var(--${color})`;
-const button_color = (color !== 'transparent' ? 'var(--fleet-yellow)' : 'var(--highlight)');
+const button_color = (color !== 'transparent' ? 'white' : 'var(--highlight)');
 
 const Element = href ? 'a' : 'button';
 ---

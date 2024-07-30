@@ -51,7 +51,6 @@ interface Props {
                     x-bind:hx-trigger="confirm_dialog_partial ? 'intersect' : false"
                     x-bind:hx-swap="confirm_dialog_partial ? 'innerHTML transition:true' : false"
                     hx-target="#confirm-dialog-description"
-                    hx-indicator=".loader"
                 ></div>
             </Flexblock>
                 
@@ -67,7 +66,6 @@ interface Props {
                     x-bind:hx-target="confirm_dialog_hx?.target ?? false"
                     x-bind:hx-swap="confirm_dialog_hx?.swap ?? 'none'"
                     x-bind:hx-vals="confirm_dialog_hx?.vals ? JSON.stringify({ data: JSON.stringify(confirm_dialog_hx?.vals) }) : false"
-                    hx-indicator=".loader"
                     x-bind:disabled="confirm_dialog_accept_disabled"
                 >
                     {t('yes')}

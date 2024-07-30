@@ -8,7 +8,7 @@ export const showDefaultLang = false;
 
 export const ui = {
     en: {
-        'index.page_title': 'Hello world',
+        'index.page_title': 'Black Omega Security - Giveaway',
 
         'icon.contract.alt': 'EVE Online Contracts Icon',
         'icon.fleet.alt': 'EVE Online Fleet Icon',
@@ -56,5 +56,17 @@ export const ui = {
         'seconds': 'seconds',
         'copy': 'Copy',
         'copied': 'Copied!',
+        'description': 'Description',
+        'zkillboard': 'Zkillboard',
+        'get_eve_character_error': 'An error occurred while fetching eve character.',
+        'unknown_character': 'Removed character / Error fetching',
+        'intercepted_script_text': 'You have been intercepted by Marshall Ibn Khatab while roaming his lands',
+        'get_eve_alliance_error': 'Error retrieving alliance name',
+        'get_eve_corporation_error': 'Error retrieving corporation name',
+        'unknown_corporation': 'Unknown corporation',
+        'corporation_history_params_error': '⚠️&nbsp;<b>CorporationHistory error:</b>&nbsp;One of the following parameters is required:&nbsp;`character_id`&nbsp;or&nbsp;`corporation_history`',
+        'get_eve_corporation_history_error': 'Error retrieving corporation history',
+        'corporation_history': 'Corporation history',
+        'hmm_so_what': 'Hmm...what now?',
     },
 } as const;

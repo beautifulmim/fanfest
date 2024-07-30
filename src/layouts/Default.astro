@@ -18,6 +18,7 @@ import {
 	AlertDialogXData,
 	ConfirmDialogXData,
 	ModalXData,
+	RifterAnimationXData,
 	InitXData,
 } from '@components/partials/AlpineScripts.astro';
 
@@ -42,6 +43,7 @@ components.modal = components.modal ?? true
 import '@fontsource-variable/montserrat';
 import '@fontsource/qahiri';
 import 'tippy.js/dist/tippy.css';
+import RifterIcon from '@components/icons/RifterIcon.astro';
 import '@/styles/base.scss';
 ---
 
@@ -77,8 +79,10 @@ import '@/styles/base.scss';
 			${components?.alert_dialog ? AlertDialogXData : ''}
 			${components?.confirm_dialog ? ConfirmDialogXData : ''}
 			${components?.modal ? ModalXData : ''}
+            ${RifterAnimationXData}
             ${InitXData}
 		}`}
+		x-init="setTimeout(() => rifter_animation_init(), 2000)"
 	>
 		<div class="[ viewport-layout-inner ]">
 			<slot />
@@ -100,6 +104,10 @@ import '@/styles/base.scss';
 				{middleware_error}
 			</div>
 		}
+
+		<div class="[ hidden ]">
+			<RifterIcon x-ref="rifter" />
+		</div>
 
 		<FooterScripts />
 	</body>

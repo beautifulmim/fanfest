@@ -1,0 +1,39 @@
+---
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '@i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang)
+
+interface Props {
+    character_id:   number;
+    character_name: string;
+}
+
+const {
+    character_id,
+    character_name,
+} = Astro.props
+
+import { query_string } from '@helpers/string';
+
+import StylessButton from '@components/blocks/StylessButton.astro';
+---
+
+<StylessButton
+    class="truncate !text-[var(--highlight)] uppercase cursor-pointer max-w-fit"
+    set:text={character_id > 0 ? character_name : `[ ${t('unknown_character')} ]`}
+    x-data={`{
+        show_character_modal() {
+            if (${character_id} == 0)
+                return
+
+            show_modal({
+                partial: '${translatePath('/partials/character_modal_component/')}?${query_string({
+                    character_id: character_id.toString(),
+                })}',
+            })
+        }
+    }`}
+    x-on:click.stop.prevent="show_character_modal()"
+/>

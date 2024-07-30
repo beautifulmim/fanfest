@@ -23,7 +23,7 @@ delete attributes.class
 
 <div
     role="dialog"
-    class:list={['dialog solid-transparency', { breakout: breakout }, { 'non-centered': non_centered }, { fixed: fixed }, Astro.props.class]}
+    class:list={['dialog', { breakout: breakout }, { 'non-centered': non_centered }, { fixed: fixed }, Astro.props.class]}
     {...attributes}
 >
     {thin ?
@@ -46,7 +46,12 @@ delete attributes.class
 <style lang="scss" is:global>
     .dialog {
         --pop-up--margin: 0;
+
+        --foreground:           black;
+        --background:           #e21d41;
+        --highlight:            white;
         
+        background-color: var(--background);
         position: absolute;
         top: 75px;
         left: 50%;
