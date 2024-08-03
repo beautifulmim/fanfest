@@ -47,11 +47,12 @@ delete attributes.class
     .dialog {
         --pop-up--margin: 0;
 
-        --foreground:           black;
-        --background:           #e21d41;
+        --dialog-foreground:           white;
+        --dialog-background:           black;
         --highlight:            white;
         
-        background-color: var(--background);
+        background-color: var(--dialog-background);
+        color: var(--dialog-foreground);
         position: absolute;
         top: 75px;
         left: 50%;
@@ -62,6 +63,18 @@ delete attributes.class
         pointer-events: none;
         box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.75);
         z-index: var(--dialog-z-index);
+
+        &:before {
+            content: ' ';
+            background-image: url('/images/pattern-inverted.jpg');
+            mix-blend-mode: lighten;
+            background-repeat: repeat;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            inset: 0;
+            z-index: 0;
+        }
 
         &.non-centered {
             transform: translateX(-50%) scale(0.97);

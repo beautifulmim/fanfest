@@ -9,6 +9,7 @@ interface Props {
     wide?:                  boolean;
     fullscreen?:            boolean;
     neocom?:                boolean;
+    inverted?:                boolean;
     [propName: string]:     any;
 }
 
@@ -17,16 +18,19 @@ const {
     wide = false,
     fullscreen = false,
     neocom = true,
+    inverted = false,
     ...attributes
 } = Astro.props;
 
+delete attributes.class
+
 const max_width = (wide ? 'var(--max-content-width)' : 'var(--max-text-width)')
 ---
-<main id="content" {...attributes}>
+<main id="content" {...attributes} class:list={[{inverted: inverted}, Astro.props.class]}>
     {cover && <PageCover {...cover} /> }
     <slot name="cover" />
 
-    <Wrapper padding_inline='var(--space-s)' class="[ w-full ]" max_width={max_width} centered={true} padding_block={fullscreen ? '0' : 'var(--space-2xl)'} neocom={neocom}>
+    <Wrapper padding_inline='var(--space-s)' class="[ w-full relative z-10 ]" max_width={max_width} centered={true} padding_block={fullscreen ? '0' : 'var(--space-2xl)'} neocom={neocom}>
         <slot />
     </Wrapper>
 </main>
@@ -45,6 +49,11 @@ const max_width = (wide ? 'var(--max-content-width)' : 'var(--max-text-width)')
             height: 100%;
             inset: 0;
             z-index: 0;
+        }
+
+        &.inverted:before {
+            background-image: url('/images/pattern-inverted.jpg');
+            mix-blend-mode: lighten;
         }
     }
 </style>

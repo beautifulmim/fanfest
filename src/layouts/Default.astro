@@ -110,13 +110,64 @@ import '@/styles/base.scss';
 		</div>
 
 		<FooterScripts />
+
+		<div
+			class="[ ccp-disclaimer ]"
+			transition:persist
+			x-data={`{
+				position: 0,
+				REFRESH_RATE_MS: 10,
+				ANIMATION_DELAY_MS: 7000,
+				STEP: 1,
+				update_position() {
+					$el.style.left = \`\${this.position}px\`
+					this.position -= this.STEP
+
+					if (this.position > $el.getBoundingClientRect().width*(-1))
+						setTimeout(() => this.update_position(), this.REFRESH_RATE_MS)
+					else
+						$el.style.display = 'none'
+				},
+				init() {
+					this.position = window.innerWidth
+					setTimeout(() => this.update_position(), this.ANIMATION_DELAY_MS)
+				}
+			}`}
+		>
+			<small>{t('ccp_disclaimer')}</small>
+		</div>
 	</body>
 </html>
 
 <style is:global lang="scss">
-	/* The integration's default injected base.css file */
 	@tailwind components;
 	@tailwind utilities;
+
+	.ccp-disclaimer {
+		position: fixed;
+		white-space: nowrap;
+		bottom: var(--space-3xs);
+		left: 100%;
+		z-index: 20;
+
+		small {
+			position: relative;
+			z-index: 1;
+			color: var(--foreground);
+			filter: invert(1);
+		}
+
+		&:before {
+			content: ' ';
+			position: fixed;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			height: 30px;
+			background-color: var(--foreground);
+			z-index: 0;
+		}
+	}
 
 	.toast {
 		position: fixed;

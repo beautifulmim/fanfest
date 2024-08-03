@@ -83,12 +83,12 @@ import GallenteLogo from '@components/logos/GallenteLogo.astro'
             }}
         />
         :        
-        <Flexblock gap='var(--space-s)'>
+        <Flexblock gap='var(--space-s)' class="[ relative ]">
             <FixedFluid
                 width='192px'
                 class="[ items-center ]"
             >
-                <picture>
+                <picture class="[ profile-pict ]">
                     <img loading="lazy" width="192" height="192" src={get_player_icon(character_id, 256)} />
                 </picture>
                 <div class="[ fluid-fixed-l ]" class="[ w-full ]" style='--fluid-fixed--width: 32px'>
@@ -154,7 +154,14 @@ import GallenteLogo from '@components/logos/GallenteLogo.astro'
         position: relative;
         background-position: top left;
         background-repeat: no-repeat;
-        background-color: var(--background);
+
+        .profile-pict {
+            background-color: black;
+            
+            img {
+                mix-blend-mode: hard-light;
+            }
+        }
 
         > * {
             position: relative;

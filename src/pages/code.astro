@@ -1,0 +1,171 @@
+---
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '@i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+
+import TheCode from '@components/blocks/TheCode.astro'
+import { experimental_AstroContainer as AstroContainer } from 'astro/container';
+import { marked } from 'marked';
+
+const container = await AstroContainer.create();
+const TheCodeTooltip = await container.renderToString(TheCode)
+
+const code_line_text = (marked.parseInline(t('code_line')) as string).replace('THE CODE', TheCodeTooltip)
+
+import PageLanding from '@components/page/PageLanding.astro';
+
+const page_title = t('index.page_title');
+
+import Default from '@layouts/Default.astro';
+
+import Flexblock from '@components/compositions/Flexblock.astro';
+import Wrapper from '@components/compositions/Wrapper.astro';
+
+import Input from '@components/blocks/Input.astro';
+import Button from '@components/blocks/Button.astro';
+
+import ArrowRight from '@components/icons/buttons/ArrowRight.astro';
+import FlexInline from '@components/compositions/FlexInline.astro';
+---
+
+<Default title={page_title}>
+	<PageLanding
+        fullscreen={true}
+        wide={true}
+        neocom={false}
+    >
+		<Wrapper
+			class="[ content-section ][ min-h-[100vh] max-w-[48rem] ]"
+			centered={true}
+			padding_block='0'
+			padding_inline='0'
+            neocom={false}
+		>
+			<Flexblock centered={true} class="[ text-center relative pb-[45px] ]" gap='var(--space-xl)'>
+				<img
+                    class="[ container animate-bounce-fade-in animate-duration-1000 ]"
+                    src="/images/container.png"
+                    width="626"
+                    height="465"
+                />
+				
+				<Flexblock
+                    centered={true} gap='var(--space-l)'
+                    x-data={`{
+                        code_str: '',
+                    }`}
+                >
+                    <Flexblock gap='var(--space-l)' centered={true}>
+                        <Wrapper
+                            class="[ text-left animate-bounce-fade-in animation-delay-2000 animate-duration-faster ]"
+                            max_width='500px'
+                            padding_block='var(--space-2xs)'
+                            padding_inline='var(--space-2xs)'
+                        >
+                            <p set:html={code_line_text} />
+                        </Wrapper>
+
+                        <FlexInline
+                            x-data={`{
+                                code: [ '', '', '', '', '', '', '', '', ],
+                                show_code: false,
+                                update_code() {
+                                    code_str = this.code.join('')
+
+                                    if (code_str.length < 8)
+                                        $focus.next()
+                                }
+                            }`}
+                            x-effect="update_code()"
+                            x-trap.noreturn="code_str.length < 8"
+                        >
+                            <Input
+                                class="[ code animate-bounce-fade-in animation-delay-[3.1s] ]"
+                                type="text"
+                                x-model="code[0]"
+                                x-mask="*"
+                                x-init="$focus.focus($el)"
+                            />
+                            <Input
+                                class="[ code animate-bounce-fade-in animation-delay-[3.2s] ]"
+                                type="text"
+                                x-model="code[1]"
+                                x-mask="*"
+                            />
+                            <Input
+                                class="[ code animate-bounce-fade-in animation-delay-[3.3s] ]"
+                                type="text"
+                                x-model="code[2]"
+                                x-mask="*"
+                            />
+                            <Input
+                                class="[ code animate-bounce-fade-in animation-delay-[3.4s] ]"
+                                type="text"
+                                x-model="code[3]"
+                                x-mask="*"
+                            />
+                            <Input
+                                class="[ code animate-bounce-fade-in animation-delay-[3.5s] ]"
+                                type="text"
+                                x-model="code[4]"
+                                x-mask="*"
+                            />
+                            <Input
+                                class="[ code animate-bounce-fade-in animation-delay-[3.7s] ]"
+                                type="text"
+                                x-model="code[5]"
+                                x-mask="*"
+                            />
+                            <Input
+                                class="[ code animate-bounce-fade-in animation-delay-[3.9s] ]"
+                                type="text"
+                                x-model="code[6]"
+                                x-mask="*"
+                            />
+                            <Input
+                                class="[ code animate-bounce-fade-in animation-delay-[4.2s] ]"
+                                type="text"
+                                x-model="code[7]"
+                                x-mask="*"
+                            />
+                        </FlexInline>
+                    </Flexblock>
+					<Button
+                        x-show="code_str.length === 8"
+                        class="[ animate-fade-in animate-duration-faster ]"
+                        href={translatePath('/prize/')}
+                    >
+						{t('submit_code')}
+						<ArrowRight />
+					</Button>
+				</Flexblock>
+			</Flexblock>
+		</Wrapper>
+	</PageLanding>
+</Default>
+
+<style lang="scss">
+	.container {
+		max-height: 70vh;
+		width: auto;
+		height: auto;
+        image-rendering: pixelated;
+	}
+
+	a {
+		font-family: var(--heading-font);
+		font-size: var(--step-5);
+		text-transform: uppercase;
+	}
+
+    .code {
+        font-size: 48px;
+        max-width: 50px;
+        padding: var(--space-3xs);
+        text-align: center;
+        line-height: 0px;
+        text-transform: uppercase;
+    }
+</style>

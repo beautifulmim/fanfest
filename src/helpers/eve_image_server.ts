@@ -1,7 +1,7 @@
 import type { EvEImageServiceSize } from '@dtypes/layout_components'
 
-export const get_item_icon = (id:number, size:EvEImageServiceSize = 64):string => {
-    return `https://images.evetech.net/types/${id}/${size <= 64 ? 'icon' : 'render'}?size=${size}`;
+export const get_item_icon = (id:number, size:EvEImageServiceSize = 64, forece_icon:boolean = false):string => {
+    return `https://images.evetech.net/types/${id}/${size <= 64 || forece_icon ? 'icon' : 'render'}?size=${size}`;
 }
 
 export const get_player_icon = (id:number, size:EvEImageServiceSize = 64):string => {

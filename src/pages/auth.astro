@@ -1,0 +1,114 @@
+---
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '@i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+
+const IBN_CHARACTER_ID = 1978535095
+
+import PageLanding from '@components/page/PageLanding.astro';
+
+const page_title = t('index.page_title');
+
+import Default from '@layouts/Default.astro';
+
+import TextBox from '@components/layout/TextBox.astro';
+
+import Flexblock from '@components/compositions/Flexblock.astro';
+import Wrapper from '@components/compositions/Wrapper.astro';
+
+import PilotName from '@components/blocks/PilotName.astro'
+import Button from '@components/blocks/Button.astro';
+import CharacterPicture from '@components/blocks/CharacterPicture.astro';
+
+import ArrowRight from '@components/icons/buttons/ArrowRight.astro';
+import FixedFluid from '@components/compositions/FixedFluid.astro';
+import ComponentBlock from '@components/blocks/ComponentBlock.astro';
+---
+
+<Default title={page_title}>
+	<PageLanding
+        fullscreen={true}
+        wide={true}
+        neocom={false}
+        inverted={true}
+    >
+		<Wrapper
+			class="[ content-section ][ min-h-[100vh] max-w-[48rem] ]"
+			centered={true}
+			padding_block='0'
+			padding_inline='0'
+            neocom={false}
+		>
+			<Flexblock centered={true} class="[ text-center relative pb-[45px] ]" gap='var(--space-xl)'>
+				<img class="[ marshall ]" src="/images/marshall.png" width="1172" height="567" />
+				
+				<Flexblock centered={true} gap='var(--space-xl)'>
+                    <Flexblock gap='var(--space-xl)'>
+                        <TextBox>
+                            <h3 class="[ blink-animation ]">{t('incoming_transmision')}</h3>    
+					    </TextBox>
+
+                        <ComponentBlock
+                            class="[ text-left animate-bounce-fade-in animation-delay-3000 animate-duration-faster ]"
+                            max_width='450px'
+                            padding_block='var(--space-2xs)'
+                            padding_inline='var(--space-2xs)'
+                        >
+                            <FixedFluid
+                                class="[ items-center ]"
+                                width='128px'
+                            >
+                                <CharacterPicture
+                                    character_id={IBN_CHARACTER_ID}
+                                    character_name="Ibn Khatab"
+                                    size={128}
+                                    icon_quality={128}
+                                />
+                                <Flexblock gap='var(--space-3xs)'>
+                                    <PilotName
+                                        character_id={IBN_CHARACTER_ID}
+                                        character_name="Ibn Khatab"
+                                    />
+                                    <p>{t('ibn_greeting')}</p>
+                                </Flexblock>
+                            </FixedFluid>
+                        </ComponentBlock>
+                    </Flexblock>
+
+                    <Button
+                        data-tippy-content={t('auth_button_tooltip')}
+                        data-tippy-delay="[1000, 200]"
+                        class="[ animate-fade-in animate-duration-faster animation-delay-7000 ]"
+                        href={translatePath('/code/')}
+                    >
+                        {t('auth_button')}
+                        <ArrowRight />
+                    </Button>
+				</Flexblock>
+			</Flexblock>
+		</Wrapper>
+	</PageLanding>
+</Default>
+
+<style lang="scss">
+    body {
+        --foreground:           white;
+        --background:           black;
+        --highlight:            #e21d41;
+    }
+
+	.marshall {
+		max-height: 50vh;
+		width: auto;
+		height: auto;
+        image-rendering: pixelated;
+	}
+
+	a {
+		font-family: var(--heading-font);
+		font-size: var(--step-5);
+		text-transform: uppercase;
+	}
+</style>

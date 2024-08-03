@@ -1,0 +1,166 @@
+---
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '@i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+import { marked } from 'marked';
+import { renderer } from '@helpers/marked';
+import { get_item_icon } from '@helpers/eve_image_server'
+
+const IBN_CHARACTER_ID = 1978535095
+
+import PilotName from '@components/blocks/PilotName.astro'
+import { experimental_AstroContainer as AstroContainer } from 'astro/container';
+
+const container = await AstroContainer.create();
+const ibn_modal = await container.renderToString(PilotName,  {
+	props: {
+		character_id: IBN_CHARACTER_ID,
+		character_name: 'Ibn Khatab',
+	},
+})
+
+const delivery_details = (marked.parseInline(t('delivery_details')) as string).replace('Ibn Khatab', ibn_modal)
+
+import PageLanding from '@components/page/PageLanding.astro';
+
+const page_title = t('index.page_title');
+
+const PRIZE = {
+    id: 44992,
+    name: "PLEX",
+    qty: 500
+}
+
+import Default from '@layouts/Default.astro';
+
+import TextBox from '@components/layout/TextBox.astro';
+
+import Flexblock from '@components/compositions/Flexblock.astro';
+import Wrapper from '@components/compositions/Wrapper.astro';
+---
+
+<Default title={page_title}>
+	<PageLanding
+        fullscreen={true}
+        wide={true}
+        neocom={false}
+    >
+		<Wrapper
+			class="[ content-section ][ min-h-[100vh] max-w-[48rem] ]"
+			centered={true}
+			padding_block='0'
+			padding_inline='0'
+            x-data={`{
+                toggle_image: false,
+                init() {
+                    setTimeout(() => {
+                        launch_confetti();
+                        this.toggle_image = true
+                    }, 6000)
+                }
+            }`}
+            neocom={false}
+		>
+			<Flexblock centered={true} class="[ text-center relative pb-[45px] ]" gap='var(--space-xl)'>
+				<img
+                    class="[ container ]"
+                    src="/images/container.png"
+                    width="626"
+                    height="465"
+                    x-show="!toggle_image"
+                />
+
+                <Flexblock
+                    class="[ prize ][ animate-bounce-fade-in animate-duration-faster ]"
+                    centered={true}    
+                    x-show="toggle_image"
+                >
+                    <picture>
+                        <img
+                            src={get_item_icon(PRIZE.id, 512, true)}
+                            width="256"
+                            height="256"
+                            alt={`${PRIZE.name} icon`}
+                        />
+                    </picture>
+                    <span>{PRIZE.qty} &times; {PRIZE.name}</span>
+                </Flexblock>
+				
+				<TextBox>
+                    <p x-show="!toggle_image" class="[ animate-fade-in animation-delay-1000 ]">{t('prize_text')}</p>
+				    <Flexblock
+                        class="[ hidden ]"
+                        x-bind:class="{ flex: toggle_image, hidden: !toggle_image }"
+                        centered={true}
+                        gap='var(--space-xl)'
+                    >
+                        <Flexblock centered={true} gap='var(--space-s)'>
+                            <h3 class="[ animate-fade-in animation-delay-1000 ]">{t('congratulation_text')}</h3>
+                            <p class="[ animate-fade-in animation-delay-2000 ]" set:html={delivery_details} />
+                        </Flexblock>
+
+                        <small class="[ animate-fade-in animation-delay-4000 ]" set:html={marked.parseInline(t('about_text'), { renderer })} />
+                </TextBox>
+			</Flexblock>
+		</Wrapper>
+	</PageLanding>
+</Default>
+
+<style lang="scss">
+	.container {
+		max-height: 70vh;
+		width: auto;
+		height: auto;
+        image-rendering: pixelated;
+		animation: zoom_in cubic-bezier(0.390, 0.575, 0.565, 1.000) both 6s;
+		animation-iteration-count: 1;
+		animation-delay: 1s;
+		animation-fill-mode: forwards;
+	}
+
+    @keyframes zoom_in {
+        from {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        to {
+            transform: scale(1.2);
+            opacity: 0;
+        }
+    }
+
+    .prize {
+		width: auto;
+		height: auto;
+
+        picture {
+            background-color: var(--highlight);
+        }
+
+        img {
+            mix-blend-mode: hard-light;
+        }
+
+        span {
+            font-size: var(--step-4);
+        }
+    }
+
+	a {
+		font-family: var(--heading-font);
+		font-size: var(--step-5);
+		text-transform: uppercase;
+	}
+
+    .code {
+        font-size: 48px;
+        max-width: 50px;
+        padding: var(--space-3xs);
+        text-align: center;
+        line-height: 0px;
+        text-transform: uppercase;
+    }
+</style>

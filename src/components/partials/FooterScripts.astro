@@ -10,22 +10,46 @@
         canvas.confetti = canvas.confetti || (await confetti.create(canvas, { resize: true }));
     })();
 
-    function launch_confetti(images) {
-        const sounds = [
-            "wow.mp3"
-        ]
+    function play_sound(filepath) {
+        let sound = new Audio(filepath);
+        sound.play();
+
+        sound.onended = function() {
+            this.currentSrc = null;
+            this.src = "";
+            this.srcObject = null;
+            this.remove();
+        };
+    }
+
+    function launch_confetti() {
+        play_sound(`/sounds/wow.mp3`)
+
+        const colors = ["#ffffff", "#e21d41", "#000000"];
+
+        const end = Date.now() + 2 * 1000;
         
-        canvas.confetti({
-            startVelocity: 100,
-            particleCount: 100,
-            spread: 150,
-            origin: { y: 0.9 },
-            scalar: 5,
-            shapes: ["image"],
-            shapeOptions: {
-                image: images,
-            },
-        })
+        (function frame() {
+            confetti({
+                particleCount: 2,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: colors,
+            });
+
+            confetti({
+                particleCount: 2,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: colors,
+            });
+
+            if (Date.now() < end) {
+                requestAnimationFrame(frame);
+            }
+        })();
     }
 </script>
 

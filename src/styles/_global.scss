@@ -40,6 +40,11 @@ body,
 }
 
 .component {
+    --component-foreground: white;
+
+    background-color: transparent;
+    color: var(--component-foreground);
+
     h4, p {
         font-size: var(--step--1);
     }
@@ -104,4 +109,16 @@ a:focus-visible {
 
 .highlight {
     color: var(--highlight);
+}
+
+.rifter-dialog,
+.rifter-modal {
+    display: flex;
+    min-height: 128px;
+    align-items: center;
+    justify-content: center;
+}
+
+.rifter-modal {
+    min-height: 80vh;
 }

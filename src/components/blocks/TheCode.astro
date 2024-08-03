@@ -1,0 +1,17 @@
+---
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '@i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+
+import Tippy from '@components/blocks/Tippy.astro';
+---
+
+<Tippy
+    partial={`${translatePath('/partials/the_code_tooltip')}`}
+    height="229px"
+    width="400px"
+>
+    {t('the_code')}
+</Tippy>

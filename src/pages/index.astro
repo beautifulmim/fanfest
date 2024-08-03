@@ -1,7 +1,9 @@
 ---
-import { getLangFromUrl, useTranslations } from '@i18n/utils';
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '@i18n/utils';
+
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
 
 const IBN_CHARACTER_ID = 1978535095
 
@@ -43,8 +45,9 @@ import ArrowRight from '@components/icons/buttons/ArrowRight.astro';
 			centered={true}
 			padding_block='0'
 			padding_inline='0'
+			neocom={false}
 		>
-			<Flexblock centered={true} class="[ text-center relative ]" gap='var(--space-xl)'>
+			<Flexblock centered={true} class="[ text-center relative pb-[45px] ]" gap='var(--space-xl)'>
 				<img class="[ marshall ]" src="/images/marshall.png" width="1172" height="567" />
 				
 				<Flexblock centered={true}>
@@ -59,7 +62,10 @@ import ArrowRight from '@components/icons/buttons/ArrowRight.astro';
 					>
 						Sosala 0.4
 					</StylessButton>
-					<Button class="[ animate-fade-in animate-duration-faster animation-delay-9000 ]">
+					<Button
+						href={translatePath('/auth/')}
+						class="[ animate-fade-in animate-duration-faster animation-delay-9000 ]"
+					>
 						{t('hmm_so_what')}
 						<ArrowRight />
 					</Button>
@@ -73,6 +79,7 @@ import ArrowRight from '@components/icons/buttons/ArrowRight.astro';
 	.marshall {
 		max-height: 50vh;
 		width: auto;
+		height: auto;
         image-rendering: pixelated;
         transform: scale(0);
 		animation: warpin cubic-bezier(0.390, 0.575, 0.565, 1.000) both 0.45s;

@@ -1,0 +1,68 @@
+---
+import { getLangFromUrl, useTranslations } from '@i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+import { marked } from 'marked';
+import { renderer } from '@helpers/marked';
+
+import PageLanding from '@components/page/PageLanding.astro';
+
+const page_title = t('index.page_title');
+
+import Default from '@layouts/Default.astro';
+
+import TextBox from '@components/layout/TextBox.astro';
+
+import Flexblock from '@components/compositions/Flexblock.astro';
+import Wrapper from '@components/compositions/Wrapper.astro';
+---
+
+<Default title={page_title}>
+	<PageLanding fullscreen={true} wide={true} neocom={false}>
+		<Wrapper
+			class="[ content-section ][ min-h-[100vh] max-w-[48rem] ]"
+			centered={true}
+			padding_block='0'
+			padding_inline='0'
+            neocom={false}
+		>
+			<Flexblock centered={true} class="[ text-center relative pb-[45px] ]" gap='var(--space-xl)'>
+				<img
+                    class="[ pod animate-bounce-fade-in animate-duration-1000 ]"
+                    src="/images/podded-green.png"
+                    width="564"
+                    height="706"
+                />
+				
+                <TextBox>
+				    <Flexblock centered={true} gap='var(--space-xl)'>
+						<h3 class="[ animate-fade-in animation-delay-3000 ]">{t('podded_script_text')}</h3>
+                        <small class="[ animate-fade-in animation-delay-6000 ]" set:html={marked.parseInline(t('about_text'), { renderer })} />
+					</TextBox>
+				</Flexblock>
+			</Flexblock>
+		</Wrapper>
+	</PageLanding>
+</Default>
+
+<style lang="scss">
+    body {
+        --background:           #d54660;
+        --highlight:            white;
+    }
+
+	.pod {
+		max-height: 70vh;
+		width: auto;
+		height: auto;
+        image-rendering: pixelated;
+	}
+
+	a {
+		font-family: var(--heading-font);
+		font-size: var(--step-5);
+		text-transform: uppercase;
+	}
+</style>
