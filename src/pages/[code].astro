@@ -1,0 +1,16 @@
+---
+import { i18n } from '@helpers/i18n'
+const { translatePath } = i18n(Astro.url)
+
+import { get_valid_code_length } from '@helpers/env'
+
+const ONE_HOUR_IN_MS = 60*60*1000
+const in_1_hour = new Date(new Date().getTime()+(20*ONE_HOUR_IN_MS))
+
+const code = Astro.params?.code
+
+if (code.length === get_valid_code_length())
+    Astro.cookies.set('code', code, { path: '/', expires: in_1_hour })
+
+return Astro.redirect(translatePath('/'))
+---

@@ -1,0 +1,17 @@
+---
+import { i18n } from '@helpers/i18n'
+const { t, translatePath } = i18n(Astro.url)
+
+try {
+    const jwt = Astro.url.searchParams.get('jwt') as string
+
+    if (!jwt)
+        throw new Error(t('invalid_jwt'))
+
+    Astro.cookies.set('auth_token', jwt, { path: '/' })
+
+    return Astro.redirect(translatePath('/code'))
+} catch (error) {
+    return Astro.redirect(translatePath('/auth?error=auth_error'))
+}
+---

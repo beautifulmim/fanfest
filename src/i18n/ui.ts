@@ -82,5 +82,14 @@ export const ui = {
         'prize_text': 'As you approach the container green lights starts to pop around it until it finally opens.',
         'delivery_details': 'Your prize will be contracted by Ibn Khatab at Sosala – WATERMELLON station.',
         'auth_button_tooltip': 'Despite we are breaking the 4th wall with this hint, is paramount for us to know which character in-game to contract the prize. Fear not, only public ESI scope will be requested.',
+
+        'invalid_code': 'Invalid code or not found.',
+        'invalid_authentication': 'Invalid authentication info.',
+        'auth_error': 'Authentication request failed.',
+        'request_auth': 'You should identify first in order to claim the code.',
+        'claiming_code_error': 'Claiming code error',
+        'oops': 'Oops! Something happened',
+        'invalid_jwt': "Invalid jwt token or not found.",
+        'other_character_prizes': 'Other prices won by this character',
     },
 } as const;

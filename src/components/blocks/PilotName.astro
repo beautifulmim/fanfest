@@ -8,11 +8,13 @@ const translatePath = useTranslatedPath(lang)
 interface Props {
     character_id:   number;
     character_name: string;
+    size?:          'sm' | 'lg';
 }
 
 const {
     character_id,
     character_name,
+    size = 'sm',
 } = Astro.props
 
 import { query_string } from '@helpers/string';
@@ -21,7 +23,7 @@ import StylessButton from '@components/blocks/StylessButton.astro';
 ---
 
 <StylessButton
-    class="truncate !text-[var(--highlight)] uppercase cursor-pointer max-w-fit"
+    class:list={[ 'truncate !text-[var(--highlight)] uppercase cursor-pointer max-w-fit', size ]}
     set:text={character_id > 0 ? character_name : `[ ${t('unknown_character')} ]`}
     x-data={`{
         show_character_modal() {
@@ -37,3 +39,9 @@ import StylessButton from '@components/blocks/StylessButton.astro';
     }`}
     x-on:click.stop.prevent="show_character_modal()"
 />
+
+<style lang="scss">
+    .lg {
+        font-size: var(--step-1);
+    }
+</style>

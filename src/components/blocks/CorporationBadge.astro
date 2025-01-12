@@ -48,17 +48,17 @@ const gap = size === 'sm' ? 'var(--space-2xs)' : 'var(--space-s)'
     <picture class:list={{ border: border }}>
         <img loading="lazy" src={get_corporation_logo(corporation.id, logo_size)} width={logo_size} height={logo_size} />
     </picture>
-    <Flexblock gap='0' class="[ w-full ]">
+    <Flexblock gap='0' class="[ w-full text-left ]">
         {size == 'lg' ?
             <span>
-                <span class="[ text-[var(--highlight)] max-w-fit ]">{corporation_name}</span>
+                <span class="[ max-w-fit ]">{corporation_name}</span>
             </span>
             <slot>
                 <small>{description}</small>
             </slot>
             :
             <small class="[ max-w-fit ]">
-                <a class="[ text-[var(--highlight)] ]">{corporation_name}</a>
+                <span>{corporation_name}</span>
             </small>
         }
     </Flexblock>

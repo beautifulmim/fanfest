@@ -1,0 +1,69 @@
+---
+interface Props {
+    title:      string;
+    subtitle?:  string;
+    image?:     string,
+    size?:      number;
+    border?:    boolean;
+    highlight?: boolean;
+    gap?:       string;
+    title_el?:  string;
+    [propName: string]: any;
+}
+
+const {
+    image,
+    title,
+    subtitle = false,
+    size = 64,
+    border = false,
+    highlight = true,
+    gap = 'var(--space-s)',
+    title_el = 'span',
+    ...attributes
+} = Astro.props
+
+const TitleElement = title_el
+
+import FixedFluid from '@components/compositions/FixedFluid.astro'
+import Flexblock from '@components/compositions/Flexblock.astro';
+---
+<FixedFluid
+    width={`${size}px`}
+    class="[ items-center ]"
+    gap={gap}
+    {...attributes}
+>
+    <slot name="picture">
+        <picture class:list={{ border: border }}>
+            {image &&
+                <img loading="lazy" src={image} width={size} height={size} />
+            }
+        </picture>
+    </slot>
+    <Flexblock gap='0'>
+        <TitleElement
+            class:list={[
+                'min-w-[200px]',
+                { 'text-[var(--highlight)]': highlight }
+            ]}
+        >
+            {title} <slot name="title"></slot>
+        </TitleElement>
+        <slot>
+            {subtitle &&
+                <small>{subtitle}</small>
+            }
+        </slot>
+    </Flexblock>
+</FixedFluid>
+
+<style lang="scss">
+    span {
+        text-wrap: balance;
+    }
+
+    small {
+        color: var(--fleet-yellow);
+    }
+</style>

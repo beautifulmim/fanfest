@@ -1,9 +1,19 @@
 ---
-import { getLangFromUrl, useTranslations, useTranslatedPath } from '@i18n/utils';
+import { i18n } from '@helpers/i18n'
+const { t } = i18n(Astro.url)
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
-const translatePath = useTranslatedPath(lang);
+import { get_auth_url } from '@helpers/env'
+import type { Alert } from '@dtypes/layout_components'
+
+let alert:Alert | null = null
+
+const error = Astro.url.searchParams.get('error') as string
+if (error) {
+    alert = {
+        title: t('oops'),
+        content: t(error as any)
+    }
+}
 
 const IBN_CHARACTER_ID = 1978535095
 
@@ -21,11 +31,14 @@ import Wrapper from '@components/compositions/Wrapper.astro';
 import PilotName from '@components/blocks/PilotName.astro'
 import Button from '@components/blocks/Button.astro';
 import CharacterPicture from '@components/blocks/CharacterPicture.astro';
+import ShowAlert from '@components/blocks/ShowAlert.astro'
 
 import ArrowRight from '@components/icons/buttons/ArrowRight.astro';
 import FixedFluid from '@components/compositions/FixedFluid.astro';
 import ComponentBlock from '@components/blocks/ComponentBlock.astro';
 ---
+
+{alert && <ShowAlert alert={alert} /> }
 
 <Default title={page_title}>
 	<PageLanding
@@ -81,7 +94,7 @@ import ComponentBlock from '@components/blocks/ComponentBlock.astro';
                         data-tippy-content={t('auth_button_tooltip')}
                         data-tippy-delay="[1000, 200]"
                         class="[ animate-fade-in animate-duration-faster animation-delay-7000 ]"
-                        href={translatePath('/code/')}
+                        href={get_auth_url()}
                     >
                         {t('auth_button')}
                         <ArrowRight />

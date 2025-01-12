@@ -1,5 +1,5 @@
-const API_URL = import.meta.env.API_URL
-const APP_URL = import.meta.env.APP_URL
+const API_URL = import.meta.env.API_URL ?? 'https://vindi.best:8004/api'
+const APP_URL = import.meta.env.APP_URL ?? 'https://vindi.best:8004/'
 const PROD_ERROR_MESSAGES = import.meta.env.PROD_ERROR_MESSAGES ?? false
 
 export const is_dev_mode = () => {
@@ -11,11 +11,7 @@ export const is_prod_mode = () => {
 }
 
 export const get_auth_url = () => {
-    return `${API_URL}/api/users/login?redirect_url=${APP_URL}/auth/login`
-}
-
-export const get_friend_auth_url = () => {
-    return `${API_URL}/api/users/login?redirect_url=${APP_URL}/friend/login`
+    return `${API_URL}/oauth/login?redirect=${APP_URL}/auth/login`
 }
 
 export const get_api_url = () => {
@@ -28,4 +24,8 @@ export const get_app_url = () => {
 
 export const prod_error_messages = () => {
     return PROD_ERROR_MESSAGES === 'true'
+}
+
+export const get_valid_code_length = () => {
+    return import.meta.env.VALID_CODE_LENGTH ? parseInt(import.meta.env.VALID_CODE_LENGTH) : 8
 }

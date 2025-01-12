@@ -1,0 +1,37 @@
+---
+import { i18n } from '@helpers/i18n'
+const { t, translatePath } = i18n(Astro.url)
+
+import { get_prize } from '@helpers/api.fanfest/code'
+import { query_string } from '@helpers/string'
+import { get_valid_code_length } from '@helpers/env'
+
+const auth_token = Astro.cookies.has('auth_token') ? (Astro.cookies.get('auth_token')?.value as string) : false
+
+if (!auth_token)
+    return Astro.redirect(translatePath('/auth?error=request_auth'))
+
+if (Astro.cookies.has('code'))
+    Astro.cookies.delete('code', { path: '/' })
+
+if (Astro.request.method === "POST") {
+    try {
+        const data = await Astro.request.formData()
+        const code = data.get("code")?.valueOf() as string
+
+        if (!code || code.length !== get_valid_code_length())
+            throw new Error(t('invalid_code'))
+
+        const prize_ans = await get_prize(auth_token, code)
+
+        const redirect = `${translatePath('/prize')}?${query_string({ prize: JSON.stringify(prize_ans.prize) })}`
+
+        return Astro.redirect(redirect)
+    } catch (error) {
+        console.log(error)
+        return Astro.redirect(translatePath('/podded'))
+    }
+}
+
+return Astro.redirect(translatePath('/podded'))
+---

@@ -1,13 +1,12 @@
 ---
-import { getLangFromUrl, useTranslations, useTranslatedPath } from '@i18n/utils';
-
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
-const translatePath = useTranslatedPath(lang);
+import { i18n } from '@helpers/i18n'
+const { t, translatePath } = i18n(Astro.url)
 
 import TheCode from '@components/blocks/TheCode.astro'
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { marked } from 'marked';
+
+const code = Astro.cookies.has('code') ? Astro.cookies.get('code').value : ''
 
 const container = await AstroContainer.create();
 const TheCodeTooltip = await container.renderToString(TheCode)
@@ -51,96 +50,99 @@ import FlexInline from '@components/compositions/FlexInline.astro';
                     height="465"
                 />
 				
-				<Flexblock
-                    centered={true} gap='var(--space-l)'
-                    x-data={`{
-                        code_str: '',
-                    }`}
-                >
-                    <Flexblock gap='var(--space-l)' centered={true}>
-                        <Wrapper
-                            class="[ text-left animate-bounce-fade-in animation-delay-2000 animate-duration-faster ]"
-                            max_width='500px'
-                            padding_block='var(--space-2xs)'
-                            padding_inline='var(--space-2xs)'
-                        >
-                            <p set:html={code_line_text} />
-                        </Wrapper>
-
-                        <FlexInline
-                            x-data={`{
-                                code: [ '', '', '', '', '', '', '', '', ],
-                                show_code: false,
-                                update_code() {
-                                    code_str = this.code.join('')
-
-                                    if (code_str.length < 8)
-                                        $focus.next()
-                                }
-                            }`}
-                            x-effect="update_code()"
-                            x-trap.noreturn="code_str.length < 8"
-                        >
-                            <Input
-                                class="[ code animate-bounce-fade-in animation-delay-[3.1s] ]"
-                                type="text"
-                                x-model="code[0]"
-                                x-mask="*"
-                                x-init="$focus.focus($el)"
-                            />
-                            <Input
-                                class="[ code animate-bounce-fade-in animation-delay-[3.2s] ]"
-                                type="text"
-                                x-model="code[1]"
-                                x-mask="*"
-                            />
-                            <Input
-                                class="[ code animate-bounce-fade-in animation-delay-[3.3s] ]"
-                                type="text"
-                                x-model="code[2]"
-                                x-mask="*"
-                            />
-                            <Input
-                                class="[ code animate-bounce-fade-in animation-delay-[3.4s] ]"
-                                type="text"
-                                x-model="code[3]"
-                                x-mask="*"
-                            />
-                            <Input
-                                class="[ code animate-bounce-fade-in animation-delay-[3.5s] ]"
-                                type="text"
-                                x-model="code[4]"
-                                x-mask="*"
-                            />
-                            <Input
-                                class="[ code animate-bounce-fade-in animation-delay-[3.7s] ]"
-                                type="text"
-                                x-model="code[5]"
-                                x-mask="*"
-                            />
-                            <Input
-                                class="[ code animate-bounce-fade-in animation-delay-[3.9s] ]"
-                                type="text"
-                                x-model="code[6]"
-                                x-mask="*"
-                            />
-                            <Input
-                                class="[ code animate-bounce-fade-in animation-delay-[4.2s] ]"
-                                type="text"
-                                x-model="code[7]"
-                                x-mask="*"
-                            />
-                        </FlexInline>
-                    </Flexblock>
-					<Button
-                        x-show="code_str.length === 8"
-                        class="[ animate-fade-in animate-duration-faster ]"
-                        href={translatePath('/prize/')}
+                <form method="POST" action={translatePath('/prize_check')}>
+                    <Flexblock
+                        centered={true} gap='var(--space-l)'
+                        x-data={`{
+                            code_str: '${code ? code : '' }',
+                        }`}
                     >
-						{t('submit_code')}
-						<ArrowRight />
-					</Button>
-				</Flexblock>
+                        <Flexblock gap='var(--space-l)' centered={true}>
+                            <Wrapper
+                                class="[ text-left animate-bounce-fade-in animation-delay-2000 animate-duration-faster ]"
+                                max_width='500px'
+                                padding_block='var(--space-2xs)'
+                                padding_inline='var(--space-2xs)'
+                            >
+                                <p set:html={code_line_text} />
+                            </Wrapper>
+
+                            <FlexInline
+                                x-data={`{
+                                    code: ${JSON.stringify(code ? code.split('') : [ '', '', '', '', '', '', '', '' ])},
+                                    show_code: false,
+                                    update_code() {
+                                        code_str = this.code.join('')
+
+                                        if (code_str.length < 8)
+                                            $focus.next()
+                                    }
+                                }`}
+                                x-effect="update_code()"
+                                x-trap.noreturn="code_str.length < 8"
+                            >
+                                <Input
+                                    class="[ code animate-bounce-fade-in animation-delay-[3.1s] ]"
+                                    type="text"
+                                    x-model="code[0]"
+                                    x-mask="*"
+                                    x-init="$focus.focus($el)"
+                                />
+                                <Input
+                                    class="[ code animate-bounce-fade-in animation-delay-[3.2s] ]"
+                                    type="text"
+                                    x-model="code[1]"
+                                    x-mask="*"
+                                />
+                                <Input
+                                    class="[ code animate-bounce-fade-in animation-delay-[3.3s] ]"
+                                    type="text"
+                                    x-model="code[2]"
+                                    x-mask="*"
+                                />
+                                <Input
+                                    class="[ code animate-bounce-fade-in animation-delay-[3.4s] ]"
+                                    type="text"
+                                    x-model="code[3]"
+                                    x-mask="*"
+                                />
+                                <Input
+                                    class="[ code animate-bounce-fade-in animation-delay-[3.5s] ]"
+                                    type="text"
+                                    x-model="code[4]"
+                                    x-mask="*"
+                                />
+                                <Input
+                                    class="[ code animate-bounce-fade-in animation-delay-[3.7s] ]"
+                                    type="text"
+                                    x-model="code[5]"
+                                    x-mask="*"
+                                />
+                                <Input
+                                    class="[ code animate-bounce-fade-in animation-delay-[3.9s] ]"
+                                    type="text"
+                                    x-model="code[6]"
+                                    x-mask="*"
+                                />
+                                <Input
+                                    class="[ code animate-bounce-fade-in animation-delay-[4.2s] ]"
+                                    type="text"
+                                    x-model="code[7]"
+                                    x-mask="*"
+                                />
+                                <input name="code" x-model="code_str" type="hidden" />
+                            </FlexInline>
+                        </Flexblock>
+                        <Button
+                            x-show="code_str.length === 8"
+                            class="[ animate-fade-in animate-duration-faster ]"
+                            type="submit"
+                        >
+                            {t('submit_code')}
+                            <ArrowRight />
+                        </Button>
+				    </Flexblock>
+                </form>
 			</Flexblock>
 		</Wrapper>
 	</PageLanding>
