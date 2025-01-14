@@ -104,8 +104,8 @@ import FlexInline from '@components/compositions/FlexInline.astro';
 				<TextBox>
                     <p x-show="!toggle_image" class="[ animate-fade-in animation-delay-1000 ]">{t('prize_text')}</p>
 				    <Flexblock
-                        class="[ hidden ]"
-                        x-bind:class="{ flex: toggle_image, hidden: !toggle_image }"
+                        class="[ !hidden ]"
+                        x-bind:class="{ '!flex': toggle_image, '!hidden': !toggle_image }"
                         centered={true}
                         gap='var(--space-xl)'
                     >
