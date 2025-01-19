@@ -71,7 +71,7 @@ export const ui = {
         'incoming_transmision': 'Incoming transmission',
         'ibn_greeting': 'No one roams these lands without my consent! Identify yourself.',
         'profile_picture_of': 'Profile picture of',
-        'auth_button': 'My EVE character is...',
+        'auth_button': 'I’m...hold on a second...',
         'code_line': 'Ibn jettisoned a container into the space while his Vindicator’s weapons align towards you. The container is prompting you for THE CODE. It’s your time to hack the container or lose your implants.',
         'the_code': 'THE CODE',
         'submit_code': 'This is it!',
@@ -91,7 +91,7 @@ export const ui = {
         'oops': 'Oops! Something happened',
         'invalid_jwt': "Invalid jwt token or not found.",
         'other_character_prizes': 'Other prizes won by this character',
-        'continue_as': 'I’am ',
+        'continue_as': 'I’m ',
         'use_different_character': 'Use different character',
     },
 } as const;
