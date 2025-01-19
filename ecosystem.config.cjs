@@ -14,13 +14,13 @@ module.exports = {
     deploy: {
         production: {
             user: "github",
-            host: "vindi.best",
+            host: "ibns.tech",
             key: "deploy.key",
             ref: "origin/master",
             repo: "https://github.com/beautifulmim/fanfest.git",
             path: "/var/projects/omega-giveaway-frontend-prod/",
             "post-deploy":
-                "npm i && npm run build && pm2 reload ecosystem.config.cjs --env production --force && pm2 save",
+                "npm i && npm run build && pm2 reload ecosystem.config.cjs --env production && pm2 save",
             env: {
                 NODE_ENV: "production",
                 HOST: "vindi.best"
