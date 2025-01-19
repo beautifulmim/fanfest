@@ -23,7 +23,6 @@ module.exports = {
                 "npm i && npm run build && pm2 reload ecosystem.config.cjs --env production && pm2 save",
             env: {
                 NODE_ENV: "production",
-                HOST: "vindi.best"
             },
         },
     },
