@@ -32,7 +32,7 @@ jobs:
               run: |
                 git stash
                 scp -i deploy.key .env github@$DEPLOY_TARGET"source/"
-                ./node_modules/pm2/bin/pm2 deploy ecosystem.config.js production
+                ./node_modules/pm2/bin/pm2 deploy ecosystem.config.cjs production
               env:
                   DEPLOY_TARGET: ${{secrets.DEPLOY_TARGET}}
 
