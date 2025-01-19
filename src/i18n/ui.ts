@@ -68,7 +68,7 @@ export const ui = {
         'get_eve_corporation_history_error': 'Error retrieving corporation history',
         'corporation_history': 'Corporation history',
         'hmm_so_what': 'Hmm...what now?',
-        'incoming_transmision': 'Incoming transmision',
+        'incoming_transmision': 'Incoming transmission',
         'ibn_greeting': 'No one roams these lands without my consent! Identify yourself.',
         'profile_picture_of': 'Profile picture of',
         'auth_button': 'My EVE character is...',
