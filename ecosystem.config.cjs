@@ -16,7 +16,7 @@ module.exports = {
             user: "github",
             host: "vindi.best",
             key: "deploy.key",
-            ref: "origin/main",
+            ref: "origin/master",
             repo: "https://github.com/beautifulmim/fanfest.git",
             path: "/var/projects/omega-giveaway-frontend-prod/",
             "post-deploy":
