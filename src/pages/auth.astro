@@ -1,9 +1,20 @@
 ---
 import { i18n } from '@helpers/i18n'
-const { t } = i18n(Astro.url)
+const { t, translatePath } = i18n(Astro.url)
+
+const auth_token = Astro.cookies.has('auth_token') ? (Astro.cookies.get('auth_token')?.value as string) : false
 
 import { get_auth_url } from '@helpers/env'
 import type { Alert } from '@dtypes/layout_components'
+import { get_user_prizes } from '@helpers/api.fanfest/code'
+import type { UserPrizes } from '@dtypes/api.fanfest'
+
+let user_prizes:UserPrizes | null = null
+try {
+    user_prizes = auth_token ? await get_user_prizes(auth_token) : null
+} catch (error) {
+    console.log(error)
+}
 
 let alert:Alert | null = null
 
@@ -26,6 +37,7 @@ import Default from '@layouts/Default.astro';
 import TextBox from '@components/layout/TextBox.astro';
 
 import Flexblock from '@components/compositions/Flexblock.astro';
+import FlexInline from '@components/compositions/FlexInline.astro';
 import Wrapper from '@components/compositions/Wrapper.astro';
 
 import PilotName from '@components/blocks/PilotName.astro'
@@ -64,7 +76,7 @@ import ComponentBlock from '@components/blocks/ComponentBlock.astro';
 					    </TextBox>
 
                         <ComponentBlock
-                            class="[ text-left animate-bounce-fade-in animation-delay-3000 animate-duration-faster ]"
+                            class="[ text-left animate-bounce-fade-in animation-delay-1000 animate-duration-faster ]"
                             max_width='450px'
                             padding_block='var(--space-2xs)'
                             padding_inline='var(--space-2xs)'
@@ -90,15 +102,37 @@ import ComponentBlock from '@components/blocks/ComponentBlock.astro';
                         </ComponentBlock>
                     </Flexblock>
 
-                    <Button
-                        data-tippy-content={t('auth_button_tooltip')}
-                        data-tippy-delay="[1000, 200]"
-                        class="[ animate-fade-in animate-duration-faster animation-delay-7000 ]"
-                        href={get_auth_url()}
-                    >
-                        {t('auth_button')}
-                        <ArrowRight />
-                    </Button>
+                    {!user_prizes?.char ?
+                        <Button
+                            data-tippy-content={t('auth_button_tooltip')}
+                            data-tippy-delay="[1000, 200]"
+                            class="[ animate-fade-in animate-duration-faster animation-delay-2000 ]"
+                            href={get_auth_url()}
+                        >
+                            {t('auth_button')}
+                            <ArrowRight />
+                        </Button>
+                        :
+                        <FlexInline>
+                            <Button
+                                class="[ animate-fade-in animate-duration-faster animation-delay-2000 ]"
+                                href={translatePath('/code')}
+                            >
+                                {t('continue_as')} {user_prizes.char.name}
+                                <ArrowRight />
+                            </Button>
+                            <Button
+                                color='transparent'
+                                data-tippy-content={t('auth_button_tooltip')}
+                                data-tippy-delay="[1000, 200]"
+                                class="[ animate-fade-in animate-duration-faster animation-delay-3000 ]"
+                                href={get_auth_url()}
+                            >
+                                {t('use_different_character')}
+                                <ArrowRight />
+                            </Button>
+                        </FlexInline>
+                    }
 				</Flexblock>
 			</Flexblock>
 		</Wrapper>

@@ -91,5 +91,7 @@ export const ui = {
         'oops': 'Oops! Something happened',
         'invalid_jwt': "Invalid jwt token or not found.",
         'other_character_prizes': 'Other prizes won by this character',
+        'continue_as': 'I’am ',
+        'use_different_character': 'Use different character',
     },
 } as const;
