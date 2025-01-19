@@ -78,7 +78,7 @@ export const ui = {
         'podded_script_text': 'You just got podded by our good friend Ibn!',
         'ccp_disclaimer': 'EVE Online, its logo, and all affiliated logos, fonts, and designs are the intellectual property of CCP. Similarly, all artwork, screenshots, characters, vehicles, storylines, and world facts associated with these trademarks are CCP’s intellectual property. EVE Online and its logo are registered trademarks of CCP. CCP bears no responsibility for the content or operation of this website and cannot be held liable for any damages resulting from its use.',
         'about_text': 'Minmatar Fleet Alliance is a PVP Alliance with strong connections to Faction Warfare. We are the number one trade supplier for the Minmatar War effort. More information at [my.minmatar.org](https://my.minmatar.org/).',
-        'congratulation_text': 'Congratulation! You cracked the code!',
+        'congratulation_text': 'Congratulations! You cracked the code!',
         'prize_text': 'As you approach the container green lights starts to pop around it until it finally opens.',
         'delivery_details': 'Your prize will be contracted by Ibn Khatab at Jita IV - Moon 4 - Caldari Navy Assembly Plant station.',
         'auth_button_tooltip': 'Despite we are breaking the 4th wall with this hint, is paramount for us to know which character in-game to contract the prize. Fear not, only public ESI scope will be requested.',
