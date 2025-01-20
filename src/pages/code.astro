@@ -137,6 +137,7 @@ import FlexInline from '@components/compositions/FlexInline.astro';
                             x-show="code_str.length === 8"
                             class="[ animate-fade-in animate-duration-faster ]"
                             type="submit"
+                            x-on:click="$el.style.display = 'none'"
                         >
                             {t('submit_code')}
                             <ArrowRight />
