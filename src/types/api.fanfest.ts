@@ -55,6 +55,7 @@ export interface Prize {
     id:     number;
     name:   string;
     qty:    number;
+    typeID: number;
 }
 
 export interface UserPrizes {

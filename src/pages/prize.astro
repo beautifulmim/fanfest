@@ -150,7 +150,7 @@ import FlexInline from '@components/compositions/FlexInline.astro';
                                 <h4>{t('other_character_prizes')}</h4>
                                 <FlexInline>
                                     {user_prizes.prizes.map(prize =>
-                                        <Badge title={`${prize.qty} × ${prize.name}`} image={get_item_icon(parseInt(prize.id), 64, true)}></Badge>
+                                        <Badge title={`${prize.qty} × ${prize.name}`} image={get_item_icon(prize.typeID, 64, true)}></Badge>
                                     )}
                                 </FlexInline>
                             </Flexblock>
